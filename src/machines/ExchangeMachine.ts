@@ -2,12 +2,16 @@ import { createMachine, assign } from 'xstate';
 
 interface Context {
     selectedCurrency?: string,
-    amount?: number
+    amount?: number,
+    buy?: number,
+    sell?: number,
+    amountConfirmed?: boolean
 }
 
 type ExchangeEvent = 
-    | { type: 'SELECT_CURRENCY'; currency: string }
-    | { type: 'NEXT'; currency: string };
+    | { type: 'SELECT_CURRENCY'; currency: string, buy: number; sell: number }
+    | { type: 'ENTER_AMOUNT'; amount: number }
+    | { type: 'CONFIRM_AMOUNT'; confirmed: boolean };
 
 export const exchangeMachine = createMachine({
     types: {} as {
@@ -26,16 +30,36 @@ export const exchangeMachine = createMachine({
                 SELECT_CURRENCY: {
                     actions: assign({
                         selectedCurrency: ({event}) => event.currency,
+                        buy: ({event}) => event.buy,
+                        sell: ({event}) => event.sell
                     }),
-                },
-                NEXT: {
-                    guard: ({ context}) => !!context.selectedCurrency,
                     target: 'inputAmount',
-                }
+                },
             }
         },
         inputAmount: {
-            type: 'final',
+            on: {
+                ENTER_AMOUNT: {
+                    actions: assign({
+                        amount: ({event}) => event.amount,
+                    }),
+                    target: 'confirmExchange'
+                }
+            }
+        },
+        confirmExchange: {
+            on: {
+                CONFIRM_AMOUNT: {
+                    actions: assign({
+                        amountConfirmed: ({event}) => event.confirmed,
+                    }),
+                    guard: ({ event}) => event.confirmed === true,
+                    target: 'paymentStep'
+                }
+            }
+        },
+        paymentStep: {
+            type: 'final'
         }
     },
 });

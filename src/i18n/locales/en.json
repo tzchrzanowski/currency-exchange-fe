@@ -5,5 +5,13 @@
     "app_header": "Currency Exchange",
     "exchange_rates": "Select Exchange",
     "buy": "Buy",
-    "sell": "Sell"
+    "sell": "Sell",
+    "selected": "Selected",
+    "next": "Next",
+    "enter_amount": "Enter amount",
+    "confirm_exchange": "Confirm exchange",
+    "amount": "Amount",
+    "exchange_rate": "Exchange Rate: ",
+    "agree_to_exchange": "I agree to exchange at this rate",
+    "go_to_payment": "Go to payment page"
 }

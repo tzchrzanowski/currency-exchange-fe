@@ -6,6 +6,8 @@ import { useMachine } from '@xstate/react';
 import { exchangeMachine } from './machines/ExchangeMachine';
 
 import CurrencyList from './pages/CurrencyList';
+import AmountInput from './pages/AmountInput';
+import ConfirmExchange from './pages/ConfirmExchange';
 
 function App() {
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -30,6 +32,12 @@ function App() {
       
       {state.matches('selectCurrency') && (
         <CurrencyList send={send} state={state} />
+      )}
+      {state.matches('inputAmount') && (
+        <AmountInput send={send} state={state} />
+      )}
+      {state.matches('confirmExchange') && (
+        <ConfirmExchange send={send} state={state} />
       )}
     </Layout>
   )

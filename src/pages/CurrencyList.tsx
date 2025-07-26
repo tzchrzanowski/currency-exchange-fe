@@ -6,7 +6,7 @@ import { type StateFrom } from 'xstate';
 import { exchangeMachine } from '../machines/ExchangeMachine';
 
 type CurrencyListProps = {
-    send: (event: {type:'SELECT_CURRENCY'; currency: string}) => void;
+    send: (event: {type:'SELECT_CURRENCY'; currency: string, buy: number, sell: number}) => void;
     state: StateFrom<typeof exchangeMachine>;
 }
 
@@ -31,9 +31,6 @@ const CurrencyList: React.FC<CurrencyListProps> = ({send, state}) => {
         load();
     }, []);
 
-    useEffect(()=> {
-        console.log("state status:" , state);
-    });
 
     if (loading) return <CircularProgress />;
 
@@ -47,7 +44,9 @@ const CurrencyList: React.FC<CurrencyListProps> = ({send, state}) => {
                     return (
                     <ListItem key={c.currency} disablePadding>
                         <ListItemButton
-                            onClick={()=> send({ type: 'SELECT_CURRENCY', currency: c.currency})}
+                            onClick={()=> {
+                                send({ type: 'SELECT_CURRENCY', currency: c.currency, buy: c.buy, sell: c.sell})
+                            }}
                         >
                             <ListItemText 
                                 primary={c.currency}
