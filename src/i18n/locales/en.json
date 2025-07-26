@@ -2,6 +2,8 @@
     "terms_header": "Terms and Conditions",
     "terms_description": "Please accept our terms and conditions to proceed.",
     "accept": "Accept",
-    "app_header": "Currency Exchange"
-
+    "app_header": "Currency Exchange",
+    "exchange_rates": "Currency Exchange Rates",
+    "buy": "Buy",
+    "sell": "Sell"
 }
