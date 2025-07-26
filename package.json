@@ -13,11 +13,13 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/material": "^7.2.0",
+    "@xstate/react": "^6.0.0",
     "axios": "^1.11.0",
     "i18next": "^25.3.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-i18next": "^15.6.1"
+    "react-i18next": "^15.6.1",
+    "xstate": "^5.20.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",

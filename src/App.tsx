@@ -2,10 +2,15 @@ import { useState, useEffect } from 'react';
 import Layout from './components/Layout';
 import TermsDialog from './components/TermsDialog';
 import { useTranslation } from 'react-i18next';
-import CurrencyList from './components/CurrencyList';
+import { useMachine } from '@xstate/react';
+import { exchangeMachine } from './machines/ExchangeMachine';
+
+import CurrencyList from './pages/CurrencyList';
 
 function App() {
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [state, send] = useMachine(exchangeMachine);
+
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -22,7 +27,10 @@ function App() {
     <Layout>
       {!termsAccepted && <TermsDialog onAccept={handleAccept} />}
       <h1>{t('app_header')}</h1>
-      <CurrencyList />
+      
+      {state.matches('selectCurrency') && (
+        <CurrencyList send={send} state={state} />
+      )}
     </Layout>
   )
 }
