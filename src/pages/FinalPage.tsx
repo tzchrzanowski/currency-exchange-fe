@@ -19,9 +19,9 @@ const FinalPage: React.FC<FinalPageProps> = ({ send, state }) => {
         const load = async() => {
             setLoading(true);
             const payload: TransactionBody = {
-                transactionId: state.context.transactionId,
+                transactionId: state.context.transactionId || 1,
                 currency: state.context.selectedCurrency || '',
-                type: "buy",
+                type: state.context.selectedOption || '',
                 amount: state.context.amount || 0 
             };
 

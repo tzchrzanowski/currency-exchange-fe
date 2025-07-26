@@ -6,23 +6,35 @@ import { useTranslation } from 'react-i18next';
 import styles from './Pages.module.css';
 
 type ConfirmExchangeProps = {
-    send: (event: {type: 'CONFIRM_AMOUNT'; amountConfirmed: boolean, amountToPay: number} | {type: 'GO_BACK'}) => void;
+    send: (event: {
+        type: 'CONFIRM_AMOUNT';
+        amountConfirmed: boolean,
+        amountToPay: number,
+        selectedOption: string
+    } | {type: 'GO_BACK'}) => void;
     state: StateFrom<typeof exchangeMachine>;
 }
 
 const ConfirmExchange: React.FC<ConfirmExchangeProps> = ({ send, state }) => {
     const [amountConfirmed, setAmountConfirmed] = useState<boolean>(false);
+    const [selectedOption, setSelectedOption] = useState<'sell' | 'buy'>('sell');
 
     const { t } = useTranslation();
 
     const amountCalc = state.context.amount ?? 0;
     const sellCalc = state.context.sell ?? 1;
-    const resultCalc = (amountCalc / sellCalc);
-    const sourceCurrency = state.context.selectedCurrency?.split("/")[1] ?? 'PLN';
-    const targetCurrency = state.context.selectedCurrency?.split("/")[0] ?? '';
+    const resultCalc = selectedOption === 'sell' ? 
+        (amountCalc / sellCalc)
+        :
+        (amountCalc * (state.context.buy ?? 1)); 
     
     const handleSubmit = () => {
-        send({ type: "CONFIRM_AMOUNT", amountConfirmed: amountConfirmed, amountToPay: resultCalc});
+        send({ 
+            type: "CONFIRM_AMOUNT",
+            amountConfirmed: amountConfirmed,
+            amountToPay: resultCalc,
+            selectedOption: selectedOption
+        });
     };
 
     const hadleGoBack = async () => {
@@ -41,11 +53,25 @@ const ConfirmExchange: React.FC<ConfirmExchangeProps> = ({ send, state }) => {
                 <Typography variant="h6">
                     {t('exchange_rate')} {t('sell')}: {state.context.sell} {t('buy')}: {state.context.buy}
                 </Typography>
+
+                <div className={styles.optionToggle}>
+                    <Button
+                        variant={selectedOption === 'sell' ? 'contained' : 'outlined'}
+                        color="secondary"
+                        onClick={()=> setSelectedOption('sell')}
+                    >
+                        {t('sell')}
+                    </Button>
+                    <Button
+                        variant={selectedOption === 'buy' ? 'contained' : 'outlined'}
+                        color="secondary"
+                        onClick={()=> setSelectedOption('buy')}
+                    >
+                        {t('buy')}
+                    </Button>
+                </div>
                 <Typography variant="h5">
-                    {t('you_will_receive')}: {state.context.amount} {targetCurrency}
-                </Typography>
-                <Typography variant="h5">
-                    {t('you_will_pay')} : {resultCalc.toFixed(2)} {sourceCurrency}
+                    {t('you_will_receive')} : {resultCalc.toFixed(2)} {selectedOption}
                 </Typography>
 
                 <FormControlLabel 

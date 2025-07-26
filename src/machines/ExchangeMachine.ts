@@ -7,13 +7,14 @@ interface Context {
     sell?: number,
     amountConfirmed?: boolean,
     amountToPay?: number,
-    transactionId?: number
+    transactionId?: number,
+    selectedOption?: string
 }
 
 type ExchangeEvent = 
     | { type: 'SELECT_CURRENCY', currency: string, buy: number, sell: number }
     | { type: 'ENTER_AMOUNT', amount: number }
-    | { type: 'CONFIRM_AMOUNT', confirmed: boolean, amountToPay: number }
+    | { type: 'CONFIRM_AMOUNT', confirmed: boolean, amountToPay: number, selectedOption: string }
     | { type: 'SUBMIT_PAYMENT', transactionId: number }
     | { type: 'PAYMENT_FAILED', reason: string}
     | { type: 'GO_BACK'}
@@ -27,7 +28,8 @@ const initialContext: Context = {
     sell: undefined,
     amountConfirmed: undefined,
     amountToPay: undefined,
-    transactionId: undefined
+    transactionId: undefined,
+    selectedOption: undefined
 }
 
 export const exchangeMachine = createMachine({
@@ -67,7 +69,8 @@ export const exchangeMachine = createMachine({
                 CONFIRM_AMOUNT: {
                     actions: assign({
                         amountConfirmed: ({event}) => event.confirmed,
-                        amountToPay: ({event}) => event.amountToPay
+                        amountToPay: ({event}) => event.amountToPay,
+                        selectedOption: ({event}) => event.selectedOption,
                     }),
                     target: 'paymentStep'
                 },

@@ -13,3 +13,10 @@
 .lngSelector {
     min-width: 100px;
 }
+
+.optionToggle {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}

@@ -18,9 +18,6 @@ const PaymentStep: React.FC<PaymentStepProps> = ({ send, state }) => {
     const [loading, setLoading] = useState(false);
     const { t } = useTranslation();
 
-    const targetCurrency = state.context.selectedCurrency?.split("/")[0] ?? '';
-    const sourceCurrency = state.context.selectedCurrency?.split("/")[1] ?? 'PLN';
-
     const handlePayment = async () => {
         setLoading(true);
             if (state.context.amount) {
@@ -50,7 +47,7 @@ const PaymentStep: React.FC<PaymentStepProps> = ({ send, state }) => {
                     {t('selected')}: {state.context.selectedCurrency}
                 </Typography>
                 <Typography variant="h5">
-                    {t('you_will_receive')}: {state.context.amount} {targetCurrency}
+                    {t('you_will_receive')}: {state.context.amount}
                 </Typography>
                 <div className={styles.buttonGroup}>
                     <Button
@@ -68,7 +65,7 @@ const PaymentStep: React.FC<PaymentStepProps> = ({ send, state }) => {
                         onClick={handlePayment}
                         disabled={loading}
                     >
-                        {loading ? <CircularProgress /> : <div>{t('pay_now')} {state.context.amountToPay.toFixed(2)} {sourceCurrency}</div>}
+                        {loading ? <CircularProgress /> : <div>{t('pay_now')} {state.context.amountToPay.toFixed(2)}</div>}
                     </Button>
                 </div>
             </CardContent>
