@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { fetchCurrencies, type Currency } from '../services/currencyService';
-import { Typography, CircularProgress, List, ListItem, ListItemText, ListItemButton } from '@mui/material';
+import { 
+    Typography,
+    CircularProgress,
+    List,
+    ListItem,
+    ListItemText,
+    ListItemButton,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem
+} from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { type StateFrom } from 'xstate';
 import { exchangeMachine } from '../machines/ExchangeMachine';
@@ -14,7 +25,7 @@ const CurrencyList: React.FC<CurrencyListProps> = ({send, state}) => {
     const [currencies, setCurrencies] = useState<Currency[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     useEffect(()=> {
         const load = async() => {
@@ -57,6 +68,19 @@ const CurrencyList: React.FC<CurrencyListProps> = ({send, state}) => {
 
                 })}
             </List>
+            <FormControl variant="outlined" size="small">
+                <InputLabel id="language-select">{t('language')}</InputLabel>
+                <Select
+                    labelId="language-select"
+                    id="language-selector"
+                    value={i18n.language}
+                    onChange={(e)=> i18n.changeLanguage(e.target.value)}
+                    label={t('language')}
+                >
+                    <MenuItem value="en">EN</MenuItem>
+                    <MenuItem value="pl">PL</MenuItem>
+                </Select>
+            </FormControl>
         </div>
     )
 }
