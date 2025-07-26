@@ -5,13 +5,17 @@ interface Context {
     amount?: number,
     buy?: number,
     sell?: number,
-    amountConfirmed?: boolean
+    amountConfirmed?: boolean,
+    amountToPay: number,
+    transactionId: number
 }
 
 type ExchangeEvent = 
-    | { type: 'SELECT_CURRENCY'; currency: string, buy: number; sell: number }
-    | { type: 'ENTER_AMOUNT'; amount: number }
-    | { type: 'CONFIRM_AMOUNT'; confirmed: boolean };
+    | { type: 'SELECT_CURRENCY', currency: string, buy: number, sell: number }
+    | { type: 'ENTER_AMOUNT', amount: number }
+    | { type: 'CONFIRM_AMOUNT', confirmed: boolean, amountToPay: number }
+    | { type: 'SUBMIT_PAYMENT', transactionId: number }
+    | { type: 'PAYMENT_FAILED', reason: string};
 
 export const exchangeMachine = createMachine({
     types: {} as {
@@ -52,14 +56,29 @@ export const exchangeMachine = createMachine({
                 CONFIRM_AMOUNT: {
                     actions: assign({
                         amountConfirmed: ({event}) => event.confirmed,
+                        amountToPay: ({event}) => event.amountToPay
                     }),
-                    guard: ({ event}) => event.confirmed === true,
                     target: 'paymentStep'
                 }
             }
         },
         paymentStep: {
+            on: {
+                SUBMIT_PAYMENT: {
+                    actions: assign({
+                        transactionId: ({event}) => event.transactionId,
+                    }),
+                    target: 'finalConfirmationStep'
+                },
+                PAYMENT_FAILED: {
+                    target: 'paymentErrorStep'
+                }
+            }
+        },
+        finalConfirmationStep: {
             type: 'final'
+        },
+        paymentErrorStep: {
         }
     },
 });

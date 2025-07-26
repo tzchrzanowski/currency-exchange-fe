@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, Checkbox, FormControlLabel, Button, Typography } from '@mui/material';
 import { type StateFrom } from 'xstate';
 import { exchangeMachine } from '../machines/ExchangeMachine';
 import { useTranslation } from 'react-i18next';
 
 type ConfirmExchangeProps = {
-    send: (event: {type: 'CONFIRM_AMOUNT'; amountConfirmed: boolean}) => void;
+    send: (event: {type: 'CONFIRM_AMOUNT'; amountConfirmed: boolean, amountToPay: number}) => void;
     state: StateFrom<typeof exchangeMachine>;
 }
 
@@ -16,17 +16,17 @@ const ConfirmExchange: React.FC<ConfirmExchangeProps> = ({ send, state }) => {
 
     const amountCalc = state.context.amount ?? 0;
     const sellCalc = state.context.sell ?? 1;
-    const resultCalc = amountCalc / sellCalc;
+    const resultCalc = (amountCalc / sellCalc);
     const sourceCurrency = state.context.selectedCurrency?.split("/")[1] ?? 'PLN';
     const targetCurrency = state.context.selectedCurrency?.split("/")[0] ?? '';
     const handleSubmit = () => {
-        send({ type: "CONFIRM_AMOUNT", amountConfirmed: amountConfirmed});
+        send({ type: "CONFIRM_AMOUNT", amountConfirmed: amountConfirmed, amountToPay: resultCalc});
     };
 
     return (
         <Card>
             <CardContent>
-            <Typography variant="h4">
+                <Typography variant="h4">
                     {t('confirm_exchange')}
                 </Typography>
                 <Typography variant="h6">

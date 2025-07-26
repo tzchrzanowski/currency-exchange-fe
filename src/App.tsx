@@ -8,6 +8,8 @@ import { exchangeMachine } from './machines/ExchangeMachine';
 import CurrencyList from './pages/CurrencyList';
 import AmountInput from './pages/AmountInput';
 import ConfirmExchange from './pages/ConfirmExchange';
+import PaymentStep from './pages/PaymentStep';
+import FinalPage from './pages/FinalPage';
 
 function App() {
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -38,6 +40,15 @@ function App() {
       )}
       {state.matches('confirmExchange') && (
         <ConfirmExchange send={send} state={state} />
+      )}
+      {state.matches('paymentStep') && (
+        <PaymentStep send={send} state={state} />
+      )}
+      {state.matches('paymentErrorStep') && (
+        <PaymentStep send={send} state={state} />
+      )}
+      {state.matches('finalConfirmationStep') && (
+        <FinalPage send={send} state={state} />
       )}
     </Layout>
   )
