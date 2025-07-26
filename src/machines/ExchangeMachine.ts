@@ -6,8 +6,8 @@ interface Context {
     buy?: number,
     sell?: number,
     amountConfirmed?: boolean,
-    amountToPay: number,
-    transactionId: number
+    amountToPay?: number,
+    transactionId?: number
 }
 
 type ExchangeEvent = 
@@ -16,7 +16,19 @@ type ExchangeEvent =
     | { type: 'CONFIRM_AMOUNT', confirmed: boolean, amountToPay: number }
     | { type: 'SUBMIT_PAYMENT', transactionId: number }
     | { type: 'PAYMENT_FAILED', reason: string}
-    | { type: 'GO_BACK'};
+    | { type: 'GO_BACK'}
+    | { type: 'RESET'};
+
+
+const initialContext: Context = {
+    selectedCurrency: undefined,
+    amount: undefined,
+    buy: undefined,
+    sell: undefined,
+    amountConfirmed: undefined,
+    amountToPay: undefined,
+    transactionId: undefined
+}
 
 export const exchangeMachine = createMachine({
     types: {} as {
@@ -25,10 +37,7 @@ export const exchangeMachine = createMachine({
     },
     id: 'exchange',
     initial: 'selectCurrency',
-    context: {
-        selectedCurrency: undefined,
-        amount: undefined,
-    } as Context,
+    context: initialContext,
     states: {
         selectCurrency: {
             on: {
@@ -91,4 +100,10 @@ export const exchangeMachine = createMachine({
             }
         }
     },
+    on: {
+        RESET: {
+            target: '.selectCurrency',
+            actions: assign(()=> initialContext)
+        },
+    }
 });

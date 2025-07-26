@@ -10,6 +10,7 @@ import AmountInput from './pages/AmountInput';
 import ConfirmExchange from './pages/ConfirmExchange';
 import PaymentStep from './pages/PaymentStep';
 import FinalPage from './pages/FinalPage';
+import SessionTimeout from './helpers/SessionTimeout';
 
 function App() {
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -27,8 +28,14 @@ function App() {
     setTermsAccepted(true);
   };
 
+  const handleTimeout = () => {
+    send({type: 'RESET'});
+  }
+
   return (
     <Layout>
+      <SessionTimeout onTimeout={handleTimeout}/>
+
       {!termsAccepted && <TermsDialog onAccept={handleAccept} />}
       <h1>{t('app_header')}</h1>
       
