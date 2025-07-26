@@ -13,5 +13,7 @@
     "amount": "Amount",
     "exchange_rate": "Exchange Rate: ",
     "agree_to_exchange": "I agree to exchange at this rate",
-    "go_to_payment": "Go to payment page"
+    "go_to_payment": "Go to payment page",
+    "you_will_receive": "You will receive",
+    "you_will_pay": "You will pay"
 }

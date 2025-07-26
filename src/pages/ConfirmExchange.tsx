@@ -14,6 +14,11 @@ const ConfirmExchange: React.FC<ConfirmExchangeProps> = ({ send, state }) => {
 
     const { t } = useTranslation();
 
+    const amountCalc = state.context.amount ?? 0;
+    const sellCalc = state.context.sell ?? 1;
+    const resultCalc = amountCalc / sellCalc;
+    const sourceCurrency = state.context.selectedCurrency?.split("/")[1] ?? 'PLN';
+    const targetCurrency = state.context.selectedCurrency?.split("/")[0] ?? '';
     const handleSubmit = () => {
         send({ type: "CONFIRM_AMOUNT", amountConfirmed: amountConfirmed});
     };
@@ -21,18 +26,22 @@ const ConfirmExchange: React.FC<ConfirmExchangeProps> = ({ send, state }) => {
     return (
         <Card>
             <CardContent>
-                <Typography variant="h5">
+            <Typography variant="h4">
                     {t('confirm_exchange')}
                 </Typography>
-                <Typography variant="h5">
+                <Typography variant="h6">
                     {t('selected')}: {state.context.selectedCurrency}
                 </Typography>
-                <Typography variant="h5">
-                    {t('exchange_rate')} {t('sell')}: {state.context.sell}
+                <Typography variant="h6">
+                    {t('exchange_rate')} {t('sell')}: {state.context.sell} {t('buy')}: {state.context.buy}
                 </Typography>
                 <Typography variant="h5">
-                    {t('exchange_rate')} {t('buy')}: {state.context.buy}
+                    {t('you_will_receive')}: {state.context.amount} {targetCurrency}
                 </Typography>
+                <Typography variant="h5">
+                    {t('you_will_pay')} : {resultCalc.toFixed(2)} {sourceCurrency}
+                </Typography>
+
                 <FormControlLabel 
                     control={
                         <Checkbox 
