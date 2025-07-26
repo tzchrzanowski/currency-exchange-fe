@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import Layout from './components/Layout';
 import TermsDialog from './components/TermsDialog';
+import { useTranslation } from 'react-i18next';
 
 function App() {
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const accepted = localStorage.getItem('termsAccepted');
@@ -18,8 +20,7 @@ function App() {
   return (
     <Layout>
       {!termsAccepted && <TermsDialog onAccept={handleAccept} />}
-      <h1>Currency Exchange</h1>
-      <p>Page Content</p>
+      <h1>{t('app_header')}</h1>
     </Layout>
   )
 }

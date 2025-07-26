@@ -1,23 +1,26 @@
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     onAccept: () => void
 }
 
 function TermsDialog({onAccept}: Props ) {
+    const { t } = useTranslation();
+
     return (
         <Dialog open>
             <DialogTitle>
-                Terms and Conditions
+                {t('terms_header')}
             </DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    Please accept our terms and conditions to proceed.
+                    {t('terms_description')}
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
                 <Button onClick={onAccept} variant="contained">
-                    Accept
+                    {t('accept')}
                 </Button>
             </DialogActions>
         </Dialog>
