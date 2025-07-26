@@ -47,7 +47,7 @@ const PaymentStep: React.FC<PaymentStepProps> = ({ send, state }) => {
                     {t('selected')}: {state.context.selectedCurrency}
                 </Typography>
                 <Typography variant="h5">
-                    {t('you_will_receive')}: {state.context.amount}
+                    {t('you_will_receive')}: {state.context.amountToPay?.toFixed(2)}
                 </Typography>
                 <div className={styles.buttonGroup}>
                     <Button
@@ -65,7 +65,7 @@ const PaymentStep: React.FC<PaymentStepProps> = ({ send, state }) => {
                         onClick={handlePayment}
                         disabled={loading}
                     >
-                        {loading ? <CircularProgress /> : <div>{t('pay_now')} {state.context.amountToPay.toFixed(2)}</div>}
+                        {loading ? <CircularProgress /> : <div>{t('pay_now')} {state.context.amount}</div>}
                     </Button>
                 </div>
             </CardContent>
