@@ -21,5 +21,6 @@
     "go_back": "Go back",
     "success": "Successful transaction",
     "failure": "Transaction failed",
-    "final_step": "Transaction finished"
+    "final_step": "Transaction finished",
+    "start_again": "Start again"
 }

@@ -6,7 +6,10 @@ import { useTranslation } from 'react-i18next';
 import { postPayment } from '../services/paymentService';
 
 type PaymentStepProps = {
-    send: (event: {type: 'SUBMIT_PAYMENT'; transactionId: number} | {type: 'PAYMENT_FAILED'; error: string}) => void;
+    send: (event: {type: 'SUBMIT_PAYMENT'; transactionId: number}
+        | {type: 'PAYMENT_FAILED'; error: string}
+        | {type: 'GO_BACK'}
+    ) => void;
     state: StateFrom<typeof exchangeMachine>;
 };
 
@@ -32,6 +35,10 @@ const PaymentStep: React.FC<PaymentStepProps> = ({ send, state }) => {
         }
     }
     
+    const hadleGoBack = async () => {
+        send({ type: 'GO_BACK'});
+    }
+
     return (
         <Card>
             <CardContent>
@@ -44,6 +51,13 @@ const PaymentStep: React.FC<PaymentStepProps> = ({ send, state }) => {
                 <Typography variant="h5">
                     {t('you_will_receive')}: {state.context.amount} {targetCurrency}
                 </Typography>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={hadleGoBack}
+                >
+                    {t('go_back')}
+                </Button>
                 <Button
                     variant="contained"
                     color="primary"

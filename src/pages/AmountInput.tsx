@@ -5,7 +5,7 @@ import { exchangeMachine } from '../machines/ExchangeMachine';
 import { useTranslation } from 'react-i18next';
 
 type AmountInputProps = {
-    send: (event: {type: 'ENTER_AMOUNT'; amount: number}) => void;
+    send: (event: {type: 'ENTER_AMOUNT'; amount: number} | {type: 'GO_BACK'}) => void;
     state: StateFrom<typeof exchangeMachine>;
 }
 
@@ -19,6 +19,10 @@ const AmountInput: React.FC<AmountInputProps> = ({ send, state }) => {
         send({ type: "ENTER_AMOUNT", amount: num});
     };
 
+    const hadleGoBack = async () => {
+        send({ type: 'GO_BACK'});
+    }
+
     return (
         <div>
             <Typography variant="h5">
@@ -31,6 +35,13 @@ const AmountInput: React.FC<AmountInputProps> = ({ send, state }) => {
                 fullWidth
                 margin="normal"
             />
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={hadleGoBack}
+            >
+                {t('go_back')}
+            </Button>
             <Button onClick={handleSubmit} variant="contained">{t('next')}</Button>
         </div>
     );

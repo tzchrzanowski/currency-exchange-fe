@@ -15,7 +15,8 @@ type ExchangeEvent =
     | { type: 'ENTER_AMOUNT', amount: number }
     | { type: 'CONFIRM_AMOUNT', confirmed: boolean, amountToPay: number }
     | { type: 'SUBMIT_PAYMENT', transactionId: number }
-    | { type: 'PAYMENT_FAILED', reason: string};
+    | { type: 'PAYMENT_FAILED', reason: string}
+    | { type: 'GO_BACK'};
 
 export const exchangeMachine = createMachine({
     types: {} as {
@@ -48,7 +49,8 @@ export const exchangeMachine = createMachine({
                         amount: ({event}) => event.amount,
                     }),
                     target: 'confirmExchange'
-                }
+                },
+                GO_BACK: 'selectCurrency'
             }
         },
         confirmExchange: {
@@ -59,7 +61,9 @@ export const exchangeMachine = createMachine({
                         amountToPay: ({event}) => event.amountToPay
                     }),
                     target: 'paymentStep'
-                }
+                },
+                GO_BACK: 'inputAmount'
+
             }
         },
         paymentStep: {
@@ -72,13 +76,19 @@ export const exchangeMachine = createMachine({
                 },
                 PAYMENT_FAILED: {
                     target: 'paymentErrorStep'
-                }
+                },
+                GO_BACK: 'confirmExchange'
             }
         },
         finalConfirmationStep: {
-            type: 'final'
+            on: {
+                GO_BACK: 'selectCurrency'
+            }
         },
         paymentErrorStep: {
+            on: {
+                GO_BACK: 'paymentStep'
+            }
         }
     },
 });

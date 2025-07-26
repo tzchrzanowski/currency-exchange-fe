@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { postTransaction, type TransactionBody} from '../services/paymentService';
 
 type FinalPageProps = {
-    send: (event: {type: 'PAYMENT_SUCCESS'; transactionId: string}) => void;
+    send: (event: {type: 'GO_BACK'}) => void;
     state: StateFrom<typeof exchangeMachine>;
 };
 
@@ -19,7 +19,7 @@ const FinalPage: React.FC<FinalPageProps> = ({ send, state }) => {
         const load = async() => {
             setLoading(true);
             const payload: TransactionBody = {
-                transactionId: 1,
+                transactionId: state.context.transactionId,
                 currency: state.context.selectedCurrency || '',
                 type: "buy",
                 amount: state.context.amount || 0 
@@ -38,6 +38,7 @@ const FinalPage: React.FC<FinalPageProps> = ({ send, state }) => {
     }, []);
 
     const hadleGoBack = async () => {
+        send({ type: 'GO_BACK'});
     }
     
     if (loading) return <CircularProgress />;
@@ -58,7 +59,7 @@ const FinalPage: React.FC<FinalPageProps> = ({ send, state }) => {
                     color="primary"
                     onClick={hadleGoBack}
                 >
-                    {t('go_back')}
+                    {t('start_again')}
                 </Button>
             </CardContent>
         </Card>

@@ -5,7 +5,7 @@ import { exchangeMachine } from '../machines/ExchangeMachine';
 import { useTranslation } from 'react-i18next';
 
 type ConfirmExchangeProps = {
-    send: (event: {type: 'CONFIRM_AMOUNT'; amountConfirmed: boolean, amountToPay: number}) => void;
+    send: (event: {type: 'CONFIRM_AMOUNT'; amountConfirmed: boolean, amountToPay: number} | {type: 'GO_BACK'}) => void;
     state: StateFrom<typeof exchangeMachine>;
 }
 
@@ -19,9 +19,14 @@ const ConfirmExchange: React.FC<ConfirmExchangeProps> = ({ send, state }) => {
     const resultCalc = (amountCalc / sellCalc);
     const sourceCurrency = state.context.selectedCurrency?.split("/")[1] ?? 'PLN';
     const targetCurrency = state.context.selectedCurrency?.split("/")[0] ?? '';
+    
     const handleSubmit = () => {
         send({ type: "CONFIRM_AMOUNT", amountConfirmed: amountConfirmed, amountToPay: resultCalc});
     };
+
+    const hadleGoBack = async () => {
+        send({ type: 'GO_BACK'});
+    }
 
     return (
         <Card>
@@ -51,6 +56,13 @@ const ConfirmExchange: React.FC<ConfirmExchangeProps> = ({ send, state }) => {
                     }
                     label={t('agree_to_exchange')}
                 />
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={hadleGoBack}
+                >
+                    {t('go_back')}
+                </Button>
                 <Button
                     variant="contained"
                     color="primary"

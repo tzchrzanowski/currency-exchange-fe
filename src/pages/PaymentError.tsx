@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { postPayment } from '../services/paymentService';
 
 type PaymentErrorProps = {
-    send: (event: {type: 'PAYMENT_FAILED'}) => void;
+    send: (event: {type: 'GO_BACK'}) => void;
     state: StateFrom<typeof exchangeMachine>;
 };
 
@@ -14,6 +14,7 @@ const PaymentError: React.FC<PaymentErrorProps> = ({ send, state }) => {
     const { t } = useTranslation();
     
     const hadleGoBack = async () => {
+        send({ type: 'GO_BACK'});
     }
 
     return (
