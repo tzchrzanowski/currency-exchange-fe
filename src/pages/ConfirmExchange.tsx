@@ -3,6 +3,7 @@ import { Card, CardContent, Checkbox, FormControlLabel, Button, Typography } fro
 import { type StateFrom } from 'xstate';
 import { exchangeMachine } from '../machines/ExchangeMachine';
 import { useTranslation } from 'react-i18next';
+import styles from './Pages.module.css';
 
 type ConfirmExchangeProps = {
     send: (event: {type: 'CONFIRM_AMOUNT'; amountConfirmed: boolean, amountToPay: number} | {type: 'GO_BACK'}) => void;
@@ -56,21 +57,26 @@ const ConfirmExchange: React.FC<ConfirmExchangeProps> = ({ send, state }) => {
                     }
                     label={t('agree_to_exchange')}
                 />
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={hadleGoBack}
-                >
-                    {t('go_back')}
-                </Button>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleSubmit}
-                    disabled={!amountConfirmed}
-                >
-                    {t('go_to_payment')}
-                </Button>
+                <div className={styles.buttonGroup}>
+                    <Button
+                        className={styles.buttonStyled}
+                        variant="contained"
+                        color="primary"
+                        onClick={hadleGoBack}
+                    >
+                        {t('go_back')}
+                    </Button>
+                    <Button
+                        className={styles.buttonStyled}
+                        variant="contained"
+                        color="primary"
+                        onClick={handleSubmit}
+                        disabled={!amountConfirmed}
+                    >
+                        {t('go_to_payment')}
+                    </Button>
+                </div>
+
             </CardContent>
         </Card>
     );

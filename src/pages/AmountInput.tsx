@@ -3,6 +3,7 @@ import { Button, TextField, Typography } from '@mui/material';
 import { type StateFrom } from 'xstate';
 import { exchangeMachine } from '../machines/ExchangeMachine';
 import { useTranslation } from 'react-i18next';
+import styles from './Pages.module.css';
 
 type AmountInputProps = {
     send: (event: {type: 'ENTER_AMOUNT'; amount: number} | {type: 'GO_BACK'}) => void;
@@ -35,14 +36,22 @@ const AmountInput: React.FC<AmountInputProps> = ({ send, state }) => {
                 fullWidth
                 margin="normal"
             />
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={hadleGoBack}
-            >
-                {t('go_back')}
-            </Button>
-            <Button onClick={handleSubmit} variant="contained">{t('next')}</Button>
+            <div className={styles.buttonGroup}>
+                <Button
+                    className={styles.buttonStyled}
+                    variant="contained"
+                    color="primary"
+                    onClick={hadleGoBack}
+                >
+                    {t('go_back')}
+                </Button>
+                <Button 
+                    className={styles.buttonStyled} 
+                    onClick={handleSubmit} 
+                    variant="contained"
+                    disabled={!amount}
+                >{t('next')}</Button>
+            </div>
         </div>
     );
 };

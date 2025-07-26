@@ -15,6 +15,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { type StateFrom } from 'xstate';
 import { exchangeMachine } from '../machines/ExchangeMachine';
+import styles from './Pages.module.css';
 
 type CurrencyListProps = {
     send: (event: {type:'SELECT_CURRENCY'; currency: string, buy: number, sell: number}) => void;
@@ -68,9 +69,10 @@ const CurrencyList: React.FC<CurrencyListProps> = ({send, state}) => {
 
                 })}
             </List>
-            <FormControl variant="outlined" size="small">
+            <FormControl variant="outlined">
                 <InputLabel id="language-select">{t('language')}</InputLabel>
                 <Select
+                    className={styles.lngSelector}
                     labelId="language-select"
                     id="language-selector"
                     value={i18n.language}

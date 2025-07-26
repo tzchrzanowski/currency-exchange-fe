@@ -1,0 +1,15 @@
+.buttonStyled {
+    min-width: 100px;
+}
+
+.buttonGroup {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+}
+
+.lngSelector {
+    min-width: 100px;
+}

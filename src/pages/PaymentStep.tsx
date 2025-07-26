@@ -4,6 +4,7 @@ import { type StateFrom } from 'xstate';
 import { exchangeMachine } from '../machines/ExchangeMachine';
 import { useTranslation } from 'react-i18next';
 import { postPayment } from '../services/paymentService';
+import styles from './Pages.module.css';
 
 type PaymentStepProps = {
     send: (event: {type: 'SUBMIT_PAYMENT'; transactionId: number}
@@ -51,21 +52,25 @@ const PaymentStep: React.FC<PaymentStepProps> = ({ send, state }) => {
                 <Typography variant="h5">
                     {t('you_will_receive')}: {state.context.amount} {targetCurrency}
                 </Typography>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={hadleGoBack}
-                >
-                    {t('go_back')}
-                </Button>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handlePayment}
-                    disabled={loading}
-                >
-                    {loading ? <CircularProgress /> : <div>{t('pay_now')} {state.context.amountToPay.toFixed(2)} {sourceCurrency}</div>}
-                </Button>
+                <div className={styles.buttonGroup}>
+                    <Button
+                        className={styles.buttonStyled}
+                        variant="contained"
+                        color="primary"
+                        onClick={hadleGoBack}
+                    >
+                        {t('go_back')}
+                    </Button>
+                    <Button
+                        className={styles.buttonStyled}
+                        variant="contained"
+                        color="primary"
+                        onClick={handlePayment}
+                        disabled={loading}
+                    >
+                        {loading ? <CircularProgress /> : <div>{t('pay_now')} {state.context.amountToPay.toFixed(2)} {sourceCurrency}</div>}
+                    </Button>
+                </div>
             </CardContent>
         </Card>
     )
